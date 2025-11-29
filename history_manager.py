@@ -16,14 +16,18 @@ def load_history():
 
 def save_history(history):
     """Saves the current calculation history to the JSON file."""
-    with open(HISTORY_FILE, 'w') as f:
-        json.dump(history, f, indent=4)
+    try:
+        with open(HISTORY_FILE, 'w') as f:
+            json.dump(history, f, indent=4)
+    except IOError:
+        # Handle case where file cannot be written (e.g., permissions issue)
+        print("Error: Could not save history file.")
 
 def add_to_history(history, calculation_string, result):
     """Adds a new entry to the history list."""
     entry = f"{calculation_string} = {result}"
     history.append(entry)
-    # Ensure history does not grow infinitely large (e.g., limit to 100 entries)
+    # Limit history size to 100 entries to prevent infinite growth
     if len(history) > 100:
-        history.pop(0) # Remove the oldest entry
+        history.pop(0) 
     return history

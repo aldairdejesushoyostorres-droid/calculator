@@ -2,13 +2,17 @@ import math
 import json
 
 # =========================================================================
-# NOTE: These functions are modified to accept arguments instead of using
-#       the input() function, making them callable from a GUI or history module.
+# NOTE: These functions accept arguments instead of using input(), 
+#       making them callable from the GUI (main.py).
 # =========================================================================
 
 def basic_operations(number1, number2, option2):
     """Performs basic arithmetic operations."""
     output = None
+    
+    # Ensure inputs are treated as floats for accurate calculation
+    number1 = float(number1)
+    number2 = float(number2)
     
     match option2:
         case 1: # Add
@@ -36,17 +40,23 @@ def basic_operations(number1, number2, option2):
 def function_eval(number1, option2, number2_optional=None):
     """Evaluates a single-number function."""
     output = None
+    number1 = float(number1)
     
+    if number2_optional is not None:
+        number2_optional = float(number2_optional)
+
     match option2:
         case 1: # Power (number1 ^ number2)
             if number2_optional is None:
-                raise ValueError("Power operation requires a second value.")
+                raise ValueError("Power operation requires a second value (y).")
             output = pow(number1, number2_optional)
         case 2: # Root (number1 ^ (1/number2))
             if number2_optional is None:
-                raise ValueError("Root operation requires a second value.")
+                raise ValueError("Root operation requires a second value (y).")
             if number2_optional == 0:
                  raise ValueError("Root cannot be zero.")
+            # Note: For even roots of negative numbers, this will raise an error,
+            # which is correct behavior for real numbers.
             output = pow(number1, 1/number2_optional)
         case 3: # Reciprocal (1/number1)
             if number1 == 0:
@@ -93,7 +103,7 @@ def function_eval(number1, option2, number2_optional=None):
             elif number1 == 2:
                 output = math.e
             else:
-                raise ValueError("Invalid constant option.")
+                raise ValueError("Invalid constant option. Use 1 for Pi or 2 for e.")
         case _:
             raise ValueError("Invalid function option.")
 
